@@ -1,0 +1,3 @@
+- The app.py contains the flask module
+- To run it just use python -m flask run 
+- There may be some library like the requests library that may need to be downloaded
