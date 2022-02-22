@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+    crossorigin=""/>
+    
+    <!-- Style Sheet -->
+    <link rel = "stylesheet" href = "style.css">
+    <!-- Leaflet Javascript -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+    integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+    crossorigin=""></script>
+    <style>
+    #mymap {height : 100vh; width: 100vs; z-index: 1; zoom: 100%;}
+    </style>
+
+  </head>
+  <body>
+      
+    <div id = 'mymap'></div>
+    
+    <!-- Bootstrap card with the toggle to turn on and off the layer -->
+    <div class = "card" style="z-index: 2;position: absolute; top: 0; left: 0; margin-left : 70%; margin-top: 5%; background-color: rgba(255, 255, 255, 0.6); font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; color: rgb(0, 102, 130); text-align: center;">
+          <div class = "card-body">
+            <h2>Vehicle Accidents in Calgary</h2>
+            <h3 style="font-size:medium;">(2017)</h3><br>
+
+            <div style="display: flex; justify-content: space-between;">
+              <h3 style="font-size:large;">Toggle Layer ON/OFF</h3><br>
+              <label class="switch">
+                <input type="checkbox" id ="switch" onclick= "showmap()" checked>
+                <span class="slider round"></span>
+              </label>
+          
+            </div>
+          </div>
+      </div>
+
+    <!-- Leaflet JavaScript for the map and tiles-->
+    <script>
+
+      var map = L.map('mymap').setView([51.048172, -114.070925], 11);
+
+      // set map tiles
+      var data_map = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+            tileSize: 512,
+            maxZoom: 18,
+            zoomOffset: -1,
+            id: 'nafissadiq/ckzxbr3px00ab15oab5ok8gal',
+            accessToken: 'pk.eyJ1IjoibmFmaXNzYWRpcSIsImEiOiJja3p4Ym81MTE4ZmE3MnZuZmxoMHFhbDdzIn0.EpDUs-ela6I7JzlaWLYicg'
+            }).addTo(map);
+
+    // Function to turn on and off the map layer
+    function showmap() {
+        var decider = document.getElementById('switch');
+        if(decider.checked){
+            var data_map = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+            tileSize: 512,
+            maxZoom: 18,
+            zoomOffset: -1,
+            id: 'nafissadiq/ckzxbr3px00ab15oab5ok8gal',
+            accessToken: 'pk.eyJ1IjoibmFmaXNzYWRpcSIsImEiOiJja3p4Ym81MTE4ZmE3MnZuZmxoMHFhbDdzIn0.EpDUs-ela6I7JzlaWLYicg'
+            }).addTo(map);
+        } 
+        else {
+            var basemap = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: '© <a href="https://www.mapbox.com/about/maps/">Mapbox</a> © <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> <strong><a href="https://www.mapbox.com/map-feedback/" target="_blank">Improve this map</a></strong>',
+            tileSize: 512,
+            maxZoom: 18,
+            zoomOffset: -1,
+            id: 'nafissadiq/ckzxziwgr00av15oa3gr1j92x',
+            accessToken: 'pk.eyJ1IjoibmFmaXNzYWRpcSIsImEiOiJja3p4Ym81MTE4ZmE3MnZuZmxoMHFhbDdzIn0.EpDUs-ela6I7JzlaWLYicg'
+            }).addTo(map);
+        }
+    }
+    </script>
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+  </body>
+</html>
