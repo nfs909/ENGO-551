@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+    <style>
+        #map {position: absolute; top: 0; bottom: 0; left: 0; right: 0;}
+    </style>
+
+</head>
+<body>
+    <div id = "map"></div>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css" />
+    <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
+    <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
+
+
+    <script>
+        var map = L.map('map').setView([51.0447, -114.0719], 11);
+
+        var options = {
+        position: 'topleft', // toolbar position, options are 'topleft', 'topright', 'bottomleft', 'bottomright'
+        drawCircleMarker: false,
+        drawMarker: false, // adds button to draw markers
+        drawPolyline: true, // adds button to draw a polyline
+        drawRectangle: false, // adds button to draw a rectangle
+        drawPolygon: false, // adds button to draw a polygon
+        drawCircle: false, // adds button to draw a cricle
+        cutPolygon: false, // adds button to cut a hole in a polygon
+        editMode: false, // adds button to toggle edit mode for all layers
+        removalMode: true, // adds a button to remove layers
+        };
+
+        // add leaflet.pm controls to the map
+        map.pm.addControls(options);
+
+        L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=pD7w54s3p7JUFeZjob0J', {
+            attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+        }).addTo(map)
+
+        map.on('pm:create', function(e) {
+        e.shape; // the name of the shape being drawn (i.e. 'Circle')
+        e.layer; // the leaflet layer created
+
+        const array1 = e.layer._latlngs;
+        const iterator = array1.values();
+        
+        const ar = []
+        for (const value of iterator) {
+            ar.push([value.lng, value.lat]);
+        }
+        
+        var geojson = turf.lineString(ar)
+        var options = {tolerance: 1, highQuality: false};
+        var simplified = turf.simplify(geojson, options);
+
+        console.log(simplified)
+
+        L.geoJSON([simplified], {
+            style: {color: "#ff0000"}
+        }).addTo(map)
+        });
+    </script>
+
+
+    
+</body>
+</html>
